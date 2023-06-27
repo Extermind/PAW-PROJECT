@@ -1,0 +1,22 @@
+DST
+- projekt bazy danych (tylko projekt, bez realizacji),                                                                                  DONE
+- projekt REST API (też chodzi o projekt, a nie realizację),                                                                            DONE
+- działająca baza danych z kluczowymi elementami (tabelami, kolekcjami); nie trzeba realizować całego projektu bazy,                    DONE
+- implementacja szkieletu aplikacji i podstawowych endpointów API,                                                                      DONE
+- umożliwienie demonstracji tworzenia, odczytywania, modyfikowania i usuwania danych (CRUD) za pośrednictwem REST API.                  DONE
+
+DB
+- dokumentacja API w Swaggerze,                                                                                                         DONE
+- aktywne wykorzystywanie VCS (np. git), zdalne repozytorium,                                                                           DONE
+- implementacja uwierzytelniania i autoryzacji użytkowników (zastosowanie sprawdzonych rozwiązań, wykorzystanie gotowych bibliotek),    DONE
+- implementacja uploadu i downloadu plików, zapisywanie ich po stronie serwera (baza danych albo system plików),                        BRAK W ZAŁOŻENIACH PROJEKTU
+- uzupełnienie implementacji bazy danych do pełnej postaci opisanej w projekcie,                                                        DONE
+- podstawowe testy jednostkowe i/lub REST API.                                                                                          SAME IN DBD
+
+DBD
+- wykorzystanie komunikacji opartej na WebSockets,                                                                                      TODO
+- implementacja uwierzytelniania na bazie klucza (API Key),                                                                             DONE (JWT)
+- implementacja mechanizmu statystyk wykorzystania API przez użytkowników (na podstawie API Key),                                       DONE
+- przygotowanie skryptów inicjalizujacych bazę danych,                                                                                  DONE
+- testy jednostkowe i testy API zintegrowane z dokumentacją (Swagger) lub przygotowane np. w Postmanie,                                 TODO
+- dostęp do API przez HTTPS.                                                                                                            TODO

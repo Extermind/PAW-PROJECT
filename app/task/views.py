@@ -44,7 +44,7 @@ def edit_task(project_id, task_id):
     if not project:
         return jsonify(error='Project not found'), 404
 
-    task = Task.query.filter_by(id=task_id, projects=project).first()
+    task = Task.query.filter(Task.id == task_id, Task.projects.contains(project)).first()
     if not task:
         return jsonify(error='Task not found'), 404
 
@@ -78,7 +78,7 @@ def delete_task(project_id, task_id):
     if not project:
         return jsonify(error='Project not found'), 404
 
-    task = Task.query.filter_by(id=task_id, projects=project).first()
+    task = Task.query.filter(Task.id == task_id, Task.projects.contains(project)).first()
     if not task:
         return jsonify(error='Task not found'), 404
 

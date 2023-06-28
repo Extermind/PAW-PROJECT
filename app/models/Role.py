@@ -6,8 +6,7 @@ class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     users = db.relationship('User', secondary='Users_Roles', back_populates="roles")
-    # Define the query attribute
-    query = db.session.query_property()
+
 
     @staticmethod
     def get_user_role():

@@ -28,6 +28,13 @@ def create_app():
         load_sql_file(app.config['DB_SCHEMA'])  # insert all tables if exists and add 2 roles ADMIN and USER
     # End Database migration section
 
+    # Demo section
+    if False:
+        from app.demo import demo_init
+        with app.app_context():
+            demo_init()
+    # End Demo section
+
     # Blueprint import section
     from app.swagger import swagger_bp
     from app.auth import auth as auth_bp

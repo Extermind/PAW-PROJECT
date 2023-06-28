@@ -14,9 +14,9 @@ DB
 - podstawowe testy jednostkowe i/lub REST API.                                                                                          SAME IN DBD
 
 DBD
-- wykorzystanie komunikacji opartej na WebSockets,                                                                                      TODO
+- wykorzystanie komunikacji opartej na WebSockets,                                                                                      BRAK W ZAŁOŻENIACH PROJEKTU
 - implementacja uwierzytelniania na bazie klucza (API Key),                                                                             DONE (JWT)
 - implementacja mechanizmu statystyk wykorzystania API przez użytkowników (na podstawie API Key),                                       DONE
 - przygotowanie skryptów inicjalizujacych bazę danych,                                                                                  DONE
-- testy jednostkowe i testy API zintegrowane z dokumentacją (Swagger) lub przygotowane np. w Postmanie,                                 TODO
+- testy jednostkowe i testy API zintegrowane z dokumentacją (Swagger) lub przygotowane np. w Postmanie,                                 DONE
 - dostęp do API przez HTTPS.                                                                                                            TODO

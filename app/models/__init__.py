@@ -5,4 +5,4 @@ from .Task import Task
 from .User import User
 from .UserProject import UserProject
 from .UserRole import UserRole
-from .LoginLog import Log
+from .Log import Log

@@ -1,363 +1,304 @@
-openapi: 3.0.0
+swagger: '2.0'
 info:
-  title: Flask API
-  version: 1.0.0
+  title: API Documentation
+  version: '1.0'
 tags:
   - name: auth
-    description: Endpoints related to user authentication and registration
+    description: Endpoints related to authentication
   - name: project
-    description: Endpoints related to Projects
+    description: Endpoints related to projects
   - name: task
-    description: Endpoints related to Tasks
+    description: Endpoints related to tasks
   - name: user
-    description: Endpoints related to Users
+    description: Endpoints related to user statistics
 paths:
-  "/register":
+  /auth/register:
     post:
       tags:
         - auth
       summary: Register a new user
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                email:
-                  type: string
-                password:
-                  type: string
-              required:
-              - username
-              - email
-              - password
       responses:
         '201':
           description: User registered successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: User registered successfully
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-  "/login":
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid role or user already exists
+  /auth/login:
     post:
       tags:
         - auth
-      summary: Login with username or email
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                email:
-                  type: string
-                password:
-                  type: string
-              required:
-              - password
+      summary: User login
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  access_token:
-                    type: string
+          description: User login successful
+          schema:
+            type: object
+            properties:
+              access_token:
+                type: string
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Username or email is missing or provide either username or email (not both)
         '401':
           description: Unauthorized
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-  "/projects":
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid credentials
+  /project/projects:
     get:
       tags:
         - project
       summary: Get all projects
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              projects:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    title:
+                      type: string
+                      example: Project 1
+                    description:
+                      type: string
+                      example: This is project 1
+                    status:
+                      type: string
+                      example: TO DO
+                    priority:
+                      type: string
+                      example: High
+                    owner_id:
+                      type: integer
+                      example: 1
+        '403':
+          description: Access forbidden
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Access forbidden
+  /project/project/add:
+    post:
+      tags:
+        - project
+      summary: Add a new project
+      responses:
+        '201':
+          description: Project added successfully
+          schema:
+            type: object
+            properties:
+              project:
                 type: object
                 properties:
-                  projects:
+                  id:
+                    type: integer
+                    example: 1
+                  owner:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: Project 1
+                  description:
+                    type: string
+                    example: This is project 1
+                  priority:
+                    type: string
+                    example: High
+                  status:
+                    type: string
+                    example: TO DO
+        '400':
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Missing required fields
+  /project/project/{id}:
+    get:
+      tags:
+        - project
+      summary: Get a project by ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the project to retrieve
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              project:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  owner:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: Project 1
+                  description:
+                    type: string
+                    example: This is project 1
+                  priority:
+                    type: string
+                    example: High
+                  status:
+                    type: string
+                    example: TO DO
+                  tasks:
                     type: array
                     items:
                       type: object
                       properties:
                         id:
                           type: integer
-                        name:
+                          example: 1
+                        title:
                           type: string
+                          example: Task 1
                         description:
                           type: string
-                        start_date:
-                          type: string
-                        end_date:
-                          type: string
-                        status:
-                          type: string
+                          example: This is task 1
                         priority:
                           type: string
-                        owner_id:
+                          example: High
+                        assignee:
                           type: integer
-  "/project/add":
-    post:
-      tags:
-        - project
-      summary: Add a new project
-      security:
-      - BearerAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                description:
-                  type: string
-                priority:
-                  type: string
-              required:
-              - title
-              - description
-      responses:
-        '201':
-          description: Project created successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  project:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      owner:
-                        type: integer
-                      title:
-                        type: string
-                      description:
-                        type: string
-                      priority:
-                        type: string
-                      status:
-                        type: string
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-  "/project/{id}":
-    get:
-      tags:
-        - project
-      summary: Get a project by ID
-      security:
-      - BearerAuth: []
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  project:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      owner:
-                        type: integer
-                      title:
-                        type: string
-                      description:
-                        type: string
-                      priority:
-                        type: string
-                      status:
-                        type: string
-                      tasks:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                            title:
-                              type: string
-                            description:
-                              type: string
-                            priority:
-                              type: string
-                            assignee:
-                              type: string
+                          example: 1
         '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-  "/project/delete/{id}":
+          description: Project not found
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Project not found
     delete:
       tags:
         - project
       summary: Delete a project by ID
-      description: You must be an owner of that project to delete it
-      security:
-      - BearerAuth: []
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
+        - name: id
+          in: path
+          description: ID of the project to delete
+          required: true
           type: integer
       responses:
         '200':
           description: Project deleted successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-
-  /project/{project_id}/task/add:
-    post:
-      tags:
-        - task
-      summary: Add a task to a project
-      parameters:
-        - name: project_id
-          in: path
-          description: ID of the project
-          required: true
-          schema:
-            type: integer
-        - in: body
-          name: task
-          description: Task object
-          required: true
           schema:
             type: object
             properties:
-              title:
+              message:
                 type: string
-              description:
+                example: Project deleted successfully
+        '403':
+          description: Access forbidden
+          schema:
+            type: object
+            properties:
+              message:
                 type: string
-              priority:
-                type: integer
-              assignee_id:
-                type: integer
-      responses:
-        '201':
-          description: Task created successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  task:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      title:
-                        type: string
-                      description:
-                        type: string
-                      priority:
-                        type: integer
-                      assignee_id:
-                        type: integer
-        '400':
-          description: Missing required fields
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
+                example: You do not own this project
         '404':
           description: Project not found
-          content:
-            application/json:
-              schema:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Project not found
+  /project/project/{project_id}/task/add:
+    post:
+      tags:
+        - task
+      summary: Add a new task to a project
+      parameters:
+        - name: project_id
+          in: path
+          description: ID of the project to add the task to
+          required: true
+          type: integer
+      responses:
+        '201':
+          description: Task added successfully
+          schema:
+            type: object
+            properties:
+              task:
                 type: object
                 properties:
-                  error:
+                  id:
+                    type: integer
+                    example: 1
+                  title:
                     type: string
-
-  /project/{project_id}/task/{task_id}:
+                    example: Task 1
+                  description:
+                    type: string
+                    example: This is task 1
+                  priority:
+                    type: string
+                    example: High
+                  assignee_id:
+                    type: integer
+                    example: 1
+        '400':
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Missing required fields
+        '404':
+          description: Project not found
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Project not found
+  /project/project/{project_id}/task/{task_id}:
     put:
       tags:
         - task
@@ -365,62 +306,46 @@ paths:
       parameters:
         - name: project_id
           in: path
-          description: ID of the project
+          description: ID of the project containing the task
           required: true
-          schema:
-            type: integer
+          type: integer
         - name: task_id
           in: path
-          description: ID of the task
+          description: ID of the task to edit
           required: true
-          schema:
-            type: integer
-        - in: body
-          name: task
-          description: Task object
-          required: true
-          schema:
-            type: object
-            properties:
-              title:
-                type: string
-              description:
-                type: string
-              priority:
-                type: integer
-              assignee_id:
-                type: integer
+          type: integer
       responses:
         '200':
           description: Task updated successfully
-          content:
-            application/json:
-              schema:
+          schema:
+            type: object
+            properties:
+              task:
                 type: object
                 properties:
-                  task:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      title:
-                        type: string
-                      description:
-                        type: string
-                      priority:
-                        type: integer
-                      assignee_id:
-                        type: integer
+                  id:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: Task 1
+                  description:
+                    type: string
+                    example: This is task 1
+                  priority:
+                    type: string
+                    example: High
+                  assignee_id:
+                    type: integer
+                    example: 1
         '404':
           description: Project or task not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Project not found
     delete:
       tags:
         - task
@@ -428,74 +353,68 @@ paths:
       parameters:
         - name: project_id
           in: path
-          description: ID of the project
+          description: ID of the project containing the task
           required: true
-          schema:
-            type: integer
+          type: integer
         - name: task_id
           in: path
-          description: ID of the task
+          description: ID of the task to delete
           required: true
-          schema:
-            type: integer
+          type: integer
       responses:
         '200':
           description: Task deleted successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Task deleted successfully
         '404':
           description: Project or task not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-  /stats:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Project not found
+  /user/stats:
     get:
       tags:
         - user
       summary: Get user statistics
-      description: Retrieves statistics for the user's API methods
-      security:
-        - JWT: [ ]
       responses:
         '200':
-          description: User stats
-          content:
-            application/json:
-              description: Successful operation
-              schema:
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              methods:
                 type: object
                 properties:
-                  methods:
-                    type: object
-                    properties:
-                      GET:
-                        type: integer
-                      POST:
-                        type: integer
-                      PUT:
-                        type: integer
-                      DELETE:
-                        type: integer
-                      PATCH:
-                        type: integer
-                      HEAD:
-                        type: integer
-                      OPTIONS:
-                        type: integer
-                      CONNECT:
-                        type: integer
-components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+                  GET:
+                    type: integer
+                    example: 5
+                  POST:
+                    type: integer
+                    example: 2
+                  PUT:
+                    type: integer
+                    example: 1
+                  DELETE:
+                    type: integer
+                    example: 3
+                  PATCH:
+                    type: integer
+                    example: 0
+                  HEAD:
+                    type: integer
+                    example: 0
+                  OPTIONS:
+                    type: integer
+                    example: 0
+                  CONNECT:
+                    type: integer
+                    example: 0
+
+

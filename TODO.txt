@@ -19,4 +19,4 @@ DBD
 - implementacja mechanizmu statystyk wykorzystania API przez użytkowników (na podstawie API Key),                                       DONE
 - przygotowanie skryptów inicjalizujacych bazę danych,                                                                                  DONE
 - testy jednostkowe i testy API zintegrowane z dokumentacją (Swagger) lub przygotowane np. w Postmanie,                                 DONE
-- dostęp do API przez HTTPS.                                                                                                            TODO
+- dostęp do API przez HTTPS.                                                                                                            DONE

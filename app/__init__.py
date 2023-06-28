@@ -1,5 +1,6 @@
 import os
 
+from app.models import Role
 from flask import Flask
 
 
@@ -24,15 +25,15 @@ def create_app():
 
     # Database migration section
     with app.app_context():
-        db.create_all()  # it would create all schema with Model classes
-        load_sql_file(app.config['DB_SCHEMA'])  # insert all tables if exists and add 2 roles ADMIN and USER
+        db.create_all()
+        load_sql_file(app.config['DB_SCHEMA'])
     # End Database migration section
 
     # Demo section
-    if False:
-        from app.demo import demo_init
-        with app.app_context():
-            demo_init()
+    # if False:
+    #     from app.demo import demo_init
+    #     with app.app_context():
+    #         demo_init()
     # End Demo section
 
     # Blueprint import section
